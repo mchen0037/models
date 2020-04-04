@@ -13,12 +13,11 @@
       </header>
       <div id="iframe-container">
         <div class="dropdown">
-          <select id="iframe-dropdown" onChange="chooseFrame()">
-            <option id="iframe-options"></option>
+          <select id="iframe-dropdown" onChange="chooseFrame(this);">
           </select>
         </div>
         <div class="iframe-box">
-          <iframe id="iframe-content" allowfullscreen frameborder="0" width="760" height="744"></iframe>
+          <iframe id="iframe-content" allowfullscreen frameborder="0" width="760" height="744" src="models/SampleModel.html"></iframe>
         </div>
       </div>
       <footer>

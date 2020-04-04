@@ -1,3 +1,11 @@
-Fire Simple.html
-Lattice Land - Explore.html
-SampleModel.html
+[
+	{"id": 0;
+	"name": "SampleModel.html"
+	},
+	{"id": 1;
+	"name": "Fire Simple.html"
+	},
+	{"id":2;
+	"name": "Lattice Land - Explore.html"
+	}
+]

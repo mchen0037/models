@@ -1,7 +1,7 @@
 function getiFrames(){
     var iframeDrop = document.getElementById("iframe-dropdown");
 
-    var response = [{"id":1,"name":"Fire Simple.html"},{"id":2,"name":"Lattice Land - Explore.html"},{"id":3,"name":"SampleModel.html"}] ;
+    var response = [{"id":0,"name":"SampleModel.html"},{"id":1,"name":"Fire Simple.html"},{"id":2,"name":"Lattice Land - Explore.html"}] ;
 
 for (i = 0; i < response.length; i++) 
 { 
@@ -28,21 +28,10 @@ for (i = 0; i < response.length; i++)
     })
     */
 }
-function chooseFrame(){
-    var el = document.getElementById('iframe-dropdown');
-    var option = el.selectedIndex;
-    switch(option){
-        case 3:
-            document.getElementById('iframe-content').src="models/SampleModel.html";
-            break;
-        case 1:
-            document.getElementById('iframe-content').src="models/Fire Simple.html";
-            break;
-        case 2:
-            document.getElementById('iframe-content').src="models/Lattice Land - Explore.html";
-            break;
+function chooseFrame(selected){
+    var option = selected.options[selected.selectedIndex].text;
+    document.getElementById('iframe-content').src=("models/" + option + ".html");
 
-    }
 }
 
 window.onload = function funct(){
