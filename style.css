@@ -16,7 +16,7 @@ header h1{
 }
 
 #iframe-container{
-  display:inline-block;
+  display: block;
   height: 1000px;
   width: 300px;
   padding: 0 13%;

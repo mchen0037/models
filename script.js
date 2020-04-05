@@ -1,7 +1,4 @@
-function getiFrames() {
-  var iframeDrop = document.getElementById("iframe-dropdown");
-
-  var models = [
+const MODELS = [
     {
       "id":0,
       "name": "SampleModel.html"
@@ -16,19 +13,23 @@ function getiFrames() {
     }
   ];
 
-  for (i = 0; i < models.length; i++) {
+function getiFrames() {
+  var iframeDrop = document.getElementById("iframe-dropdown");
+
+  for (i = 0; i < MODELS.length; i++) {
     var newOption = document.createElement("option");  // Create a <option> node
-    var newOptionName = document.createTextNode(models[i].name.split(".")[0]);
+    var newOptionName = document.createTextNode(MODELS[i].name.split(".")[0]);
     newOption.appendChild(newOptionName);
     iframeDrop.appendChild(newOption); ///append Item
   }
 }
-function chooseFrame(selected){
+
+function chooseFrame(selected) {
   var option = selected.options[selected.selectedIndex].text;
   document.getElementById('iframe-content').src=("models/" + option + ".html");
 }
 
-window.onload = function funct(){
+window.onload = function funct() {
   getiFrames();
   chooseFrame();
 }
