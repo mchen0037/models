@@ -5,7 +5,7 @@ body {
   color: #333;
 }
 
-header {
+/* header {
   background: black;
   height: 50px;
 }
@@ -14,6 +14,10 @@ header h1 {
   color: white;
   text-align:center;
   margin: 0 auto;
+} */
+
+iframe html {
+  overflow: hidden; 
 }
 
 .container {
@@ -34,7 +38,7 @@ iframe {
   /* position: absolute; */
 }
 
-footer {
+/* footer {
   display:block;
   bottom:0;
   background: black;
@@ -44,4 +48,4 @@ footer {
 footer h5{
   color: white;
   text-align:center;
-}
+} */
