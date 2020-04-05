@@ -10,22 +10,28 @@ header {
   height: 50px;
 }
 
-header h1{
+header h1 {
   color: white;
   text-align:center;
+  margin: 0 auto;
 }
 
-#iframe-container{
+.container {
+  display:flex;
+  margin-top: 2rem;
+}
+
+#iframe-container {
   display: block;
   height: 1000px;
-  width: 300px;
-  padding: 0 13%;
-  margin: 2% 0;
+  /* width: 300px; */
+  /* padding: 0 13%; */
+  margin: 0 auto;
 }
 
-iframe{
+iframe {
   display:block;
-  position: absolute;
+  /* position: absolute; */
 }
 
 footer {

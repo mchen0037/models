@@ -2,26 +2,33 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script type="text/javascript" src="script.js"></script>
-    </head>
+  </head>
 
-    <body>
+  <body>
+
       <header>
         <h1>Header</h1>
       </header>
-      <div id="iframe-container">
-        <div class="dropdown">
-          <select id="iframe-dropdown" onChange="chooseFrame(this);">
-          </select>
-        </div>
-        <div class="iframe-box">
-          <iframe align:"center" id="iframe-content" allowfullscreen frameborder="0" width="760" height="744" src="models/SampleModel.html"></iframe>
+
+      <div class="container">
+        <div id="iframe-container">
+          <div class="dropdown">
+            <select id="iframe-dropdown" onChange="chooseFrame(this);"></select>
+          </div>
+          <div class="iframe-box">
+            <iframe align:"center" id="iframe-content" allowfullscreen frameborder="0" width="760" height="744" src="models/SampleModel.html"></iframe>
+          </div>
         </div>
       </div>
+
       <footer>
         <h5>The end</h5>
       </footer>
-    </body>
+
+  </body>
+
+  <script type="text/javascript" src="script.js"></script>
+
 </html>
