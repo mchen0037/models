@@ -5,4 +5,23 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script type="text/javascript" src="script.js"></script>
+    </head>
+
+    <body>
+      <header>
+        <h1>Header</h1>
+      </header>
+      <div id="iframe-container">
+        <div class="dropdown">
+          <select id="iframe-dropdown" onChange="chooseFrame(this);">
+          </select>
+        </div>
+        <div class="iframe-box">
+          <iframe id="iframe-content" allowfullscreen frameborder="0" width="760" height="744" src="models/SampleModel.html"></iframe>
+        </div>
+      </div>
+      <footer>
+        <h5>The end</h5>
+      </footer>
+    </body>
 </html>
