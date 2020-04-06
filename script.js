@@ -13,6 +13,8 @@ const MODELS = [
     }
   ];
 
+// console.log(document.getElementById('iframe-content').contentWindow.document)
+
 function getiFrames() {
   var iframeDrop = document.getElementById("iframe-dropdown");
 

@@ -5,29 +5,20 @@ body {
   color: #333;
 }
 
-/* header {
-  background: black;
-  height: 50px;
-}
-
-header h1 {
-  color: white;
-  text-align:center;
-  margin: 0 auto;
-} */
-
-iframe html {
-  overflow: hidden; 
-}
-
 .container {
   display:flex;
   margin-top: 2rem;
 }
 
+.iframe-box {
+  margin-top: 2rem;
+  border-radius: 10px;
+  border: 3px solid #000;
+}
+
 #iframe-container {
   display: block;
-  height: 1000px;
+  /* height: 1000px; */
   /* width: 300px; */
   /* padding: 0 13%; */
   margin: 0 auto;
@@ -35,17 +26,4 @@ iframe html {
 
 iframe {
   display:block;
-  /* position: absolute; */
 }
-
-/* footer {
-  display:block;
-  bottom:0;
-  background: black;
-  height: 20px;
-}
-
-footer h5{
-  color: white;
-  text-align:center;
-} */
