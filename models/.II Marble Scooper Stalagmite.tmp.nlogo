@@ -176,7 +176,7 @@ NIL
 PLOT
 320
 10
-695
+558
 379
 How many Green per Scoop?
 targets
