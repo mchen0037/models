@@ -189,7 +189,7 @@ true
 false
 "" ""
 PENS
-"target-color" 1.0 1 -16777216 true "" ""
+"y = how many times x marbles showed up (frequency)" 1.0 1 -16777216 true "" ""
 
 BUTTON
 215
