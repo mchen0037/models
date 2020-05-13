@@ -179,8 +179,8 @@ PLOT
 695
 379
 How many Green per Scoop?
-targets
-how many times
+number of green in a scoop
+number of scoops
 0.0
 4.0
 0.0
