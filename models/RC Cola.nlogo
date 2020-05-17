@@ -2,6 +2,7 @@ turtles-own [current-state]
 globals [clipboard]
 to setup
   clear-all
+  reset-ticks
   ask patches [
     set pcolor white
   ]
@@ -45,6 +46,7 @@ to go
     ]
   ]
   make-histogram
+  tick
 end
 
 to-report play-rc-cola-1
@@ -59,6 +61,7 @@ to-report play-rc-cola-1
       set plabel num
     ]
     set tries tries + 1
+    wait 0.01
   ]
   report tries
 end
@@ -108,7 +111,7 @@ GRAPHICS-WINDOW
 0
 1
 ticks
-1.0
+5.0
 
 BUTTON
 63
