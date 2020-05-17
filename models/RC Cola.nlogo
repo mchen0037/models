@@ -1,4 +1,4 @@
-turtles-own [current-state]
+turtles-own [current-state tries winner? leaving? ]
 globals [clipboard]
 to setup
   clear-all
@@ -13,9 +13,6 @@ to setup
 end
 
 to go
-  if mouse-down? [
-    print (word "(" mouse-xcor ", " mouse-ycor")")
-  ]
   let add-turtle? false
   ask patch 0 0 [
     if count turtles-here = 0 [
@@ -25,6 +22,8 @@ to go
   if add-turtle? [ turtle-enters-line ]
 
   ask turtles [
+    if xcor = -4 [ die ]
+
     ;; if nobody is ahead of you in line, then move up in line
     ifelse not at-machine? [
       if not (any? turtles-on patch-ahead 1) [
@@ -32,16 +31,18 @@ to go
       ]
     ] [
       ; i am at the machine
-      right 90
-      let tries play-rc-cola-1
-      set label-color black
-      set label tries
-      set clipboard insert-item 0 clipboard tries
-      left 90
-      fd 1
-      die
-      ask patch -3 1 [
-        set plabel ""
+      facexy -3 1
+      let num buy-cola
+      if num = 6 [ set winner? true ]
+      if winner? [
+        print winner?
+        set clipboard fput tries clipboard
+        set winner? false
+        left 90
+        set leaving? true
+      ]
+      if leaving? [
+        fd 1
       ]
     ]
   ]
@@ -49,21 +50,14 @@ to go
   tick
 end
 
-to-report play-rc-cola-1
+to-report buy-cola
   let num random 6 + 1
   ask patch -3 1 [
     set plabel num
   ]
-  let tries 1
-  while [num != 6] [
-    set num random 6 + 1
-    ask patch -3 1 [
-      set plabel num
-    ]
-    set tries tries + 1
-    wait 0.01
-  ]
-  report tries
+  set tries tries + 1
+  set label tries
+  report num
 end
 
 to turtle-enters-line
@@ -72,6 +66,11 @@ to turtle-enters-line
     set size 1
     facexy -2 0
     setxy 0 0
+    set tries 0
+    set label-color black
+    set label tries
+    set winner? false
+    set leaving? false
   ]
 end
 
