@@ -35,7 +35,6 @@ to go
       let num buy-cola
       if num = 6 [ set winner? true ]
       if winner? [
-        print winner?
         set clipboard fput tries clipboard
         set winner? false
         left 90
