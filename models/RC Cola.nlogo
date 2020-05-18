@@ -1,5 +1,5 @@
 turtles-own [current-state tries winner? leaving? ]
-globals [clipboard]
+globals [clipboard people-count]
 to setup
   clear-all
   reset-ticks
@@ -22,7 +22,10 @@ to go
   if add-turtle? [ turtle-enters-line ]
 
   ask turtles [
-    if xcor = -4 [ die ]
+    if xcor = -4 [
+      set people-count people-count + 1
+      die
+    ]
 
     ;; if nobody is ahead of you in line, then move up in line
     ifelse not at-machine? [
@@ -112,9 +115,9 @@ ticks
 5.0
 
 BUTTON
-63
+34
 396
-126
+97
 429
 NIL
 setup
@@ -129,10 +132,10 @@ NIL
 1
 
 BUTTON
-149
-396
-212
-429
+105
+397
+168
+430
 NIL
 go
 T
@@ -162,6 +165,17 @@ false
 "" ""
 PENS
 "tries-and-frequency" 1.0 1 -16777216 true "" ""
+
+MONITOR
+185
+393
+273
+438
+total people
+people-count
+0
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
