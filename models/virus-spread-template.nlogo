@@ -5,7 +5,7 @@ to setup
     set pcolor white
   ]
   
-  create-turtles 300
+  create-turtles 1000
   
   ask turtles [
     setxy random-xcor random-ycor
