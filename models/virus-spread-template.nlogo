@@ -5,7 +5,7 @@ to setup
     set pcolor white
   ]
   
-  create-turtles 1000
+  create-turtles 300
   
   ask turtles [
     setxy random-xcor random-ycor
@@ -20,11 +20,11 @@ end
 GRAPHICS-WINDOW
 210
 10
-639
-439
+670
+470
 -1
 -1
-13
+4.55
 1
 10
 1
@@ -34,10 +34,10 @@ GRAPHICS-WINDOW
 1
 1
 1
--16
-16
--16
-16
+-50
+50
+-50
+50
 0
 0
 1
