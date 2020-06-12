@@ -24,7 +24,7 @@ to setup
 end
 
 to go
-  if not any? turtles with [color = black] [stop]
+  if (not any? turtles with [color = black]) or (ticks > 104) [stop]
   ask turtles [
     if (color = red) [
       ask (turtles-on neighbors4) with [color != green] [
