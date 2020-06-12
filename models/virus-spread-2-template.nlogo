@@ -43,9 +43,9 @@ to move
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-300
+248
 14
-721
+669
 436
 -1
 -1
@@ -119,17 +119,17 @@ people
 HORIZONTAL
 
 PLOT
-11
-224
-282
-429
-Sickness over Time
+707
+19
+1167
+433
+Number of People Sick
 time
 people sick
 0.0
 10.0
 0.0
-2000.0
+7000.0
 true
 false
 "" ""
