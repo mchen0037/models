@@ -8,14 +8,18 @@ to setup
     set pcolor white
   ]
 
-  create-turtles num-people [
+  create-turtles num-people
+
+  ask turtles [
     setxy random-xcor random-ycor
     set color black
+    set weeks-sick 0
   ]
 
   ask one-of turtles [
     set color red
   ]
+
 
 end
 
@@ -29,7 +33,9 @@ to go
     ]
     wiggle
     move
+
   ]
+  plot-procedure
   tick
 end
 
@@ -40,6 +46,12 @@ end
 
 to move
   forward 1
+end
+
+to plot-procedure
+  set-current-plot-pen "infected"
+  plot (count turtles with [color = red] / num-people) * 100
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -112,7 +124,7 @@ num-people
 num-people
 1000
 7000
-7000.0
+5000.0
 1000
 1
 people
@@ -123,18 +135,18 @@ PLOT
 19
 1167
 433
-Number of People Sick
+Number of People Sick (%)
 time
 people sick
 0.0
-10.0
+104.0
 0.0
-7000.0
+100.0
 true
 false
 "" ""
 PENS
-"default" 1.0 0 -2674135 true "" "plot count turtles with [color = red]"
+"infected" 1.0 0 -2674135 true "" ""
 
 @#$#@#$#@
 ## WHAT IS IT?
