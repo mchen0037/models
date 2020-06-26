@@ -239,6 +239,7 @@ end
 to gbcc-on-enter [user-id role]
   if gbcc:my-role = "teacher" [
     set num-users num-users + 1
+    gbcc:broadcast "msg" (word user-id "has entered the room")
     print(word "Students connected:" num-users)
   ]
 end
@@ -246,6 +247,7 @@ end
 to gbcc-on-exit [user-id role]
   if gbcc:my-role = "teacher" [
     set num-users num-users - 1
+    gbcc:broadcast "msg" (word user-id "has left the room")
     print(word "Students connected:" num-users)
   ]
 end

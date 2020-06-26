@@ -1,35 +1,22 @@
-extensions [gbcc]
-globals [num-users]
+extensions [ gbcc graph ]
 
 to setup
   clear-all
-  create-turtles 50 [
-    forward 10
-    right 90
-  ]
+  setup-graph
+  reset-ticks
 end
 
-to go
-  ask turtles [
-    forward 0.175
-    right 1
-  ]
-end
-
-to gbcc-on-enter [user-id role]
-  if gbcc:my-role = "teacher" [
-    set num-users num-users + 1
-    gbcc:broadcast "msg" (word user-id "has entered the room")
-    print(word "Students connected:" num-users)
-  ]
-end
-
-to gbcc-on-exit [user-id role]
-  if gbcc:my-role = "teacher" [
-    set num-users num-users - 1
-    gbcc:broadcast "msg" (word user-id "has left the room")
-    print(word "Students connected:" num-users)
-  ]
+to setup-graph
+  graph:show-graph
+  graph:mouse-off
+  graph:hide-toolbar
+  graph:center-view [ 0 0 ]
+  graph:eval-command "ZoomIn(-16.5,16.5,-16.5,16.5)"
+  let my-point-name name-for-point-of gbcc:who-am-ai
+  graph:create-point my-point-name [0 0]
+  graph:eval-command (word "SetLabelMode(" my-point-name",2)")
+  graph:eval-command (word "ShowLabel(" my-point-name", true)")
+  set graph-ready? true
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -58,40 +45,6 @@ GRAPHICS-WINDOW
 1
 ticks
 30.0
-
-BUTTON
-34
-56
-97
-89
-NIL
-setup
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-124
-57
-187
-90
-NIL
-go
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
 
 @#$#@#$#@
 ## WHAT IS IT?
