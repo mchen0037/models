@@ -237,8 +237,17 @@ to go
 end
 
 to gbcc-on-enter [user-id role]
-  set num-users num-users + 1
-  print(word "Students connected:" num-users)
+  if gbcc:my-role = "teacher" [
+    set num-users num-users + 1
+    print(word "Students connected:" num-users)
+  ]
+end
+
+to gbcc-on-exit [user-id role]
+  if gbcc:my-role = "teacher" [
+    set num-users num-users - 1
+    print(word "Students connected:" num-users)
+  ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
