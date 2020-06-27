@@ -1,66 +1,84 @@
-extensions [ gbcc graph ]
-globals [my-turtle coords]
+extensions [gbcc]
+
+globals [ my-turtle coords ]
+breed [actors actor]
+turtles-own [uid]
 
 to setup
   clear-all
-  setup-graph
-  create-turtles 1 [ set color blue - 1 set shape "circle" set my-turtle self ]
+  create-turtles 1 [
+    set my-turtle self
+    set heading 0
+  ]
   reset-ticks
 end
 
-to setup-graph
-  graph:show-graph
-  graph:mouse-off
-  graph:hide-toolbar
-  graph:center-view [ 0 0 ]
-  graph:eval-command "ZoomIn(-16.5,16.5,-16.5,16.5)"
-  let my-point-name name-for-point-of gbcc:who-am-i
-  graph:create-point my-point-name [0 0]
-  graph:eval-command (word "SetLabelMode(" my-point-name",2)")
-  graph:eval-command (word "ShowLabel(" my-point-name", true)")
-end
-
-to-report name-for-point-of [user-id]
-  report (word "Point" user-id)
-end
-
-to go-up
-  ask my-turtle [ set heading 0 fd 0.5 set coords (list xcor ycor ) ]
+to go-forward
+  ask my-turtle [ fd 1 set coords (list xcor ycor) ]
   update-message
 end
 
-
-to go-down
-  ask my-turtle [ set heading 180 fd 0.5 set coords (list xcor ycor ) ]
+to go-back
+  ask my-turtle [ bk 1 set coords (list xcor ycor) ]
   update-message
 end
-
-
-to go-left
-  ask my-turtle [ set heading 270 fd 0.5 set coords (list xcor ycor ) ]
-  update-message
-end
-
 
 to go-right
-  ask my-turtle [ set heading 90 fd 0.5 set coords (list xcor ycor )  ]
+  ask my-turtle [ rt 9 set coords (list xcor ycor) ]
   update-message
 end
 
+to go-left
+  ask my-turtle [ lt 9 set coords (list xcor ycor) ]
+  update-message
+end
+
+to toggle-pen
+  ask my-turtle [ ifelse pen-mode = "up" [ pen-down ] [ pen-up ] ]
+  update-message
+end
 
 to update-message
-  graph:set-xy name-for-point-of gbcc:who-am-i coords
   gbcc:set "upd" (sentence coords [heading] of my-turtle)
   gbcc:broadcast "update" (sentence coords [heading] of my-turtle)
 end
 
 
-;; most code from PointActivity Plus https://pointactivity.app.vanderbilt.edu/ by Corey Brady
+;; example key: "update" value "[xcor ycor heading]"
+to gbcc-on-message [ user-id role key value ]
+  ;; only go through messages from other people
+  if user-id != gbcc:who-am-i
+  [
+    if key = "update"
+    [
+      ;; let target turtle be the actors owned by the person who made this message
+      let target actors with [ uid = user-id ]
+      ;; if the user hasn't made a turtle yet, create a target
+      ifelse target = no-turtles  [ create-new user-id key value ]
+      [
+        ask target [ update-with value ]
+      ]
+    ]
+  ]
+end
+
+to create-new [ user-id key value ]
+  create-actors 1
+  [
+    set uid user-id
+    update-with value
+  ]
+end
+
+to update-with [ value ]
+  setxy item 0 value item 1 value
+  set heading item 2 value
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+252
 10
-647
+689
 448
 -1
 -1
@@ -85,29 +103,12 @@ ticks
 30.0
 
 BUTTON
-26
-55
-89
-88
-NIL
-setup
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-82
-135
-137
-168
-up
-go-up
+76
+173
+151
+206
+forward
+go-forward
 NIL
 1
 T
@@ -119,27 +120,27 @@ NIL
 1
 
 BUTTON
-82
-169
 137
-202
-down
-go-down
+217
+200
+250
+right
+go-right
 NIL
 1
 T
 OBSERVER
 NIL
-S
+D
 NIL
 NIL
 1
 
 BUTTON
-27
-169
-82
-202
+34
+216
+97
+249
 left
 go-left
 NIL
@@ -153,18 +154,52 @@ NIL
 1
 
 BUTTON
-137
-169
-192
-202
-right
-go-right
+80
+257
+143
+290
+back
+go-back
 NIL
 1
 T
 OBSERVER
 NIL
-D
+S
+NIL
+NIL
+1
+
+BUTTON
+82
+308
+145
+341
+pen
+toggle-pen
+NIL
+1
+T
+OBSERVER
+NIL
+F
+NIL
+NIL
+1
+
+BUTTON
+40
+55
+103
+88
+NIL
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
 NIL
 NIL
 1

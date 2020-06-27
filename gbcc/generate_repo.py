@@ -6,9 +6,11 @@ import zipfile
 PATH_TO_GBCC_CONVERTER = os.getenv("PATH_TO_GBCC_CONVERTER")
 PATH_TO_MODELS_FOLDER = os.getenv("PATH_TO_MODELS_FOLDER")
 
-FILE_NAME = "parabola-formation"
+FILE_NAME = "collaborative-art"
 FILE_LOCATION = PATH_TO_MODELS_FOLDER + FILE_NAME + ".nlogo"
 EXPECTED_ZIP_LOCATION = PATH_TO_MODELS_FOLDER + FILE_NAME + ".zip"
+
+print("generating " + FILE_NAME + ".nlogo")
 
 # os.system("cp " + FILE_NAME + PATH_TO_GBCC_CONVERTER + "/" + FILE_NAME)
 # os.system("node " + PATH_TO_GBCC_CONVERTER + "/converter.js " + FILE_NAME)
