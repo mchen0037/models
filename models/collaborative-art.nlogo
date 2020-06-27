@@ -40,7 +40,7 @@ end
 
 to update-message
   gbcc:set "upd" (sentence coords [heading] of my-turtle)
-  gbcc:broadcast "update" (sentence coords [heading] of my-turtle)
+  gbcc:broadcast "update" (sentence coords [heading] of my-turtle [pen-mode] of my-turtle)
 end
 
 
@@ -73,6 +73,9 @@ end
 to update-with [ value ]
   setxy item 0 value item 1 value
   set heading item 2 value
+  if item 3 value = "up" [pen-up]
+  if item 3 value = "down" [pen-down]
+  if item 3 value = "erase" [pen-erase]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
