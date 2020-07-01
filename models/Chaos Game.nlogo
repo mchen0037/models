@@ -18,6 +18,7 @@ to setup
     fd 15
     lt 120
     draw-triangles 7
+    setxy item 0 one item 1 one
   ]
   ask patches [ set pcolor white ]
 end
