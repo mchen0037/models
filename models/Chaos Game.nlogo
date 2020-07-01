@@ -19,6 +19,7 @@ to setup
     lt 120
     draw-triangles 7
     setxy item 0 one item 1 one
+    set color red
   ]
   ask patches [ set pcolor white ]
 end
