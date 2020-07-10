@@ -2,7 +2,7 @@ breed [cards card]
 breed [players player]
 cards-own [ value dealt? ]
 players-own [ score ]
-globals [win-loss-record me]
+globals [win-loss-record me table]
 
 to setup
   clear-all
@@ -20,6 +20,7 @@ to setup
   ]
 
   reset-table
+  set table (list table-1-value table-2-value table-3-value table-4-value table-5-value)
 
   set win-loss-record []
 
@@ -317,13 +318,14 @@ end
 
 to deal-cards
   ask players with [color != green] [
+    let player-xcor xcor
+    let player-ycor ycor
     repeat 2 [
       ;; pick one of the cards, set its status to dealt and then link it with a player
       let target one-of cards with [dealt? = false]
-      ask target [ set dealt? true ]
+      ask target [ set dealt? true setxy player-xcor player-ycor spread-out-card]
       create-link-with target
     ]
-    move-near-me xcor ycor
   ]
 end
 
@@ -331,7 +333,10 @@ to deal-table
   let table-xcor -1
   let table-ycor -3
 
-  repeat 5 [
+  let available filter [c -> c > 1] table
+  let num-on-table length available
+
+  repeat 5 - num-on-table [
     let target one-of cards with [dealt? = false]
     ask target [
       setxy table-xcor table-ycor
@@ -362,6 +367,10 @@ to print-cards [card-list]
     set print-list fput (word [value] of c item 5 [shape] of c) print-list
   ]
   show print-list
+end
+
+to-report chance-of-winning
+  report sum win-loss-record / length win-loss-record * 100
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -414,7 +423,7 @@ INPUTBOX
 120
 193
 num-players
-4.0
+3.0
 1
 0
 Number
@@ -459,7 +468,7 @@ INPUTBOX
 91
 435
 card-1-value
-2.0
+4.0
 1
 0
 Number
@@ -470,7 +479,7 @@ INPUTBOX
 92
 515
 card-2-value
-2.0
+5.0
 1
 0
 Number
@@ -493,7 +502,7 @@ CHOOSER
 card-1-shape
 card-1-shape
 "suit heart" "suit diamond" "suit club" "suit spade"
-0
+1
 
 PLOT
 776
@@ -519,7 +528,7 @@ INPUTBOX
 842
 139
 table-1-value
-3.0
+7.0
 1
 0
 Number
@@ -532,7 +541,7 @@ CHOOSER
 table-1-shape
 table-1-shape
 "suit heart" "suit diamond" "suit club" "suit spade"
-2
+3
 
 CHOOSER
 868
@@ -591,7 +600,7 @@ INPUTBOX
 1055
 140
 table-3-value
-4.0
+9.0
 1
 0
 Number
@@ -602,7 +611,7 @@ INPUTBOX
 1159
 139
 table-4-value
-8.0
+4.0
 1
 0
 Number
@@ -613,10 +622,21 @@ INPUTBOX
 1269
 140
 table-5-value
-14.0
+0.0
 1
 0
 Number
+
+MONITOR
+1163
+354
+1309
+415
+NIL
+chance-of-winning
+2
+1
+15
 
 @#$#@#$#@
 ## WHAT IS IT?
