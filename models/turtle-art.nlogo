@@ -3,16 +3,19 @@ globals [num-users]
 
 to setup
   clear-all
-  create-turtles 50 [
-    forward 10
-    right 90
+  create-turtles 1 [
+    set heading 90
+    pen-down
+    set color red
   ]
 end
 
-to go
+to draw
   ask turtles [
-    forward 0.175
-    right 1
+    repeat 4 [
+      forward 10
+      right 90
+    ]
   ]
 end
 
@@ -33,7 +36,16 @@ to gbcc-on-exit [user-id role]
 end
 
 to share
+  gbcc:store-state
   gbcc:broadcast-view "My View"
+end
+
+to gbcc-on-select [user-id role]
+  gbcc:restore-state-from-user user-id
+end
+
+to gbcc-on-deselect [user-id role]
+  gbcc:restore-state
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -86,8 +98,8 @@ BUTTON
 187
 90
 NIL
-go
-T
+draw
+NIL
 1
 T
 OBSERVER
