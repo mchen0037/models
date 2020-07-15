@@ -31,6 +31,10 @@ to gbcc-on-exit [user-id role]
     print(word "Students connected:" num-users)
   ]
 end
+
+to share
+  gbcc:broadcast-view "My View"
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -84,6 +88,23 @@ BUTTON
 NIL
 go
 T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+35
+123
+98
+156
+NIL
+share
+NIL
 1
 T
 OBSERVER

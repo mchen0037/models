@@ -1,4 +1,4 @@
-globals [ one two three ]
+globals [ one two three main-turtle]
 
 
 to setup
@@ -6,9 +6,9 @@ to setup
   crt 1 [
     set color black
     set heading 90
-    bk 7.5
+    setxy -7.5 -5
     set one (list (xcor) (ycor) )
-    pd
+;    pd
     fd 15
     set two (list (xcor) (ycor) )
     lt 120
@@ -17,23 +17,39 @@ to setup
     lt 120
     fd 15
     lt 120
-    draw-triangles 7
+;    draw-triangles 7
     setxy item 0 one item 1 one
     set color red
+    set main-turtle self
   ]
   ask patches [ set pcolor white ]
 end
 
+to go
+  let ran random 3 + 1
+  if ran = 1 [ go-one ]
+  if ran = 2 [ go-two ]
+  if ran = 3 [ go-three ]
+  let x [xcor] of turtle 0
+  let y [ycor] of turtle 0
+  crt 1 [
+    set color red
+    set shape "circle"
+    set size 0.2
+    setxy x y
+  ]
+end
+
 to go-one
-  ask turtles [ go-midpoint item 0 one item 1 one ]
+  ask main-turtle [ go-midpoint item 0 one item 1 one ]
 end
 
 to go-two
-  ask turtles [ go-midpoint item 0 two item 1 two ]
+  ask main-turtle [ go-midpoint item 0 two item 1 two ]
 end
 
 to go-three
-  ask turtles [ go-midpoint item 0 three item 1 three ]
+  ask main-turtle [ go-midpoint item 0 three item 1 three ]
 end
 
 to go-midpoint [ x y ]
@@ -71,11 +87,11 @@ end
 GRAPHICS-WINDOW
 210
 10
-647
-448
+636
+437
 -1
 -1
-13.0
+15.5
 1
 10
 1
@@ -85,10 +101,10 @@ GRAPHICS-WINDOW
 1
 1
 1
--16
-16
--16
-16
+-13
+13
+-13
+13
 0
 0
 1
@@ -154,6 +170,23 @@ BUTTON
 NIL
 setup
 NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+100
+237
+163
+270
+NIL
+go
+T
 1
 T
 OBSERVER
