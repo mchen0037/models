@@ -8,7 +8,7 @@ to setup
   ask patches [
     if random 100 < 90 [ set pcolor blue - 4 ]
   ]
-  crt 1000 [
+  crt 500 [
     set color white
     setxy random-xcor random-ycor
     set size random 5
@@ -16,14 +16,18 @@ to setup
   ]
 end
 
+to create-shooting-star
+  create-heads 1 [
+    set shape "circle"
+    set color white
+    setxy random-xcor random-ycor
+    set size random 10
+  ]
+end
+
 to go
   if random 100 < 1 [
-    create-heads 1 [
-      set shape "circle"
-      set color white
-      setxy random-xcor random-ycor
-      set size random 10
-    ]
+    create-shooting-star
   ]
   ask turtles [
     if random 100 < 5 [
@@ -44,7 +48,7 @@ to go
     ]
     fd 3
     right 0.5
-    set size size - 0.25
+    set size size - random-float 0.5
     if size < 0 [ die ]
   ]
 
@@ -108,6 +112,23 @@ T
 OBSERVER
 NIL
 NIL
+NIL
+NIL
+1
+
+BUTTON
+77
+187
+223
+220
+NIL
+create-shooting-star
+NIL
+1
+T
+OBSERVER
+NIL
+F
 NIL
 NIL
 1
