@@ -1,79 +1,86 @@
-extensions [sound]
-breed [chords chord]
-chords-own [notes instrument-name]
-globals [chord-progression]
+breed [foci focus]
+breed [directrii directrix]
+breed [points point]
+
+directrii-own [slope]
 
 to setup
   clear-all
-  create-chords 4 [
-    set instrument-name "Acoustic Grand Piano"
-    set heading 0
-    fd 5
-    rt 90
+  ask patches [set pcolor white]
+
+  create-foci 1 [
+    setxy foci-xcor foci-ycor
+    set shape "circle"
+    set color blue
+    set size 2
   ]
 
-  ask chord 0 [
-    set notes [60 64 67 71]
+  create-directrii 1 [
+    setxy 0 directrix-ycor
+    set heading 90
+    set color blue
+    set pen-size 2
+    pen-down
+    forward max-pxcor
+    forward max-pxcor + 1
+    die
   ]
 
-  ask chord 1 [
-    set notes [57 60 64 67]
-    repeat 8 [
-      fd 10 * pi / 32
-      rt 360 / 32
-    ]
+  create-points 5000 [
+    setxy random-xcor random-ycor
+    set size 0.5
+    set color black
+    set shape "circle"
   ]
 
-  ask chord 2 [
-    set notes [53 57 60 64]
-    repeat 16 [
-      fd 10 * pi / 32
-      rt 360 / 32
-    ]
-  ]
-
-  ask chord 3 [
-    set notes [55 59 62 65]
-    repeat 24 [
-      fd 10 * pi / 32
-      rt 360 / 32
-    ]
-  ]
-  set chord-progression 0
   reset-ticks
 end
 
 to go
-  ask chords [
-    pen-down
-    fd 10 * pi / 32
-    rt 360 / 32
+  if ticks >= 1000 [
+    ask points with [should-move? = true] [die]
+    stop
   ]
-  if ticks mod 8 = 0 [
-    show chord-progression
-    ask chord chord-progression [
-      play-notes
+
+  ask points [
+    if should-move? [
+      move-around
     ]
-    set chord-progression (chord-progression + 1) mod 4
   ]
+
   tick
 end
 
-to play-notes
-  foreach notes [ n ->
-    sound:play-note instrument-name n 64 2
-    wait 0.05
-  ]
+to move-around
+  fd 0.1
+  rt random 30
+  lt random 30
+end
+
+to-report should-move?
+  report not (distance-from-directrix = distance-from-foci)
+end
+
+to-report distance-from-foci
+  report round-hundredth (sqrt ((xcor - foci-xcor) ^ 2 + (ycor - foci-ycor) ^ 2))
+end
+
+to-report round-hundredth [n]
+  report round (n * (1 / (10 ^ rounding-margin-n))) / (1 / (10 ^ rounding-margin-n))
+end
+
+to-report distance-from-directrix
+  report round-hundredth (abs (ycor - directrix-ycor))
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
-10
-647
-448
+208
+13
+633
+439
 -1
 -1
-13.0
+4.13
 1
 10
 1
@@ -83,21 +90,21 @@ GRAPHICS-WINDOW
 1
 1
 1
--16
-16
--16
-16
+-50
+50
+-50
+50
 1
 1
 1
 ticks
-4.0
+60.0
 
 BUTTON
-31
-65
-94
-98
+37
+70
+100
+103
 NIL
 setup
 NIL
@@ -111,78 +118,10 @@ NIL
 1
 
 BUTTON
-7
-160
-73
-193
-Cmaj7
-ask chord 0 [play-notes]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-8
-198
-73
-231
-Am7
-ask chord 1 [play-notes]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-8
-235
-73
-268
-Fmaj7
-ask chord 2 [play-notes]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-9
-275
-75
-308
-Gmaj7
-ask chord 3 [play-notes]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-115
-64
-178
-97
+119
+71
+182
+104
 NIL
 go
 T
@@ -193,6 +132,64 @@ NIL
 NIL
 NIL
 NIL
+1
+
+INPUTBOX
+41
+122
+102
+182
+foci-xcor
+10.0
+1
+0
+Number
+
+INPUTBOX
+107
+122
+168
+182
+foci-ycor
+10.0
+1
+0
+Number
+
+INPUTBOX
+41
+191
+168
+251
+directrix-ycor
+0.0
+1
+0
+Number
+
+SLIDER
+16
+279
+188
+312
+rounding-margin-n
+rounding-margin-n
+-3
+3
+-3.0
+1
+1
+NIL
+HORIZONTAL
+
+TEXTBOX
+16
+319
+218
+361
+the model will round to the nearest\n10 ^ (rounding-margin-n)
+11
+0.0
 1
 
 @#$#@#$#@

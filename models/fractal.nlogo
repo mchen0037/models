@@ -5,7 +5,7 @@ to setup
     set heading 0
     setxy 0 min-pycor / 2
     set amt 7
-    set color cyan
+    set color 69.9
     pen-down
   ]
   reset-ticks
@@ -19,14 +19,17 @@ to go
     ] [
       fd amt
       let next amt * 0.75
+      let next-color color - 0.61875
       hatch 1 [
         pen-down
         set amt next
+        set color next-color
         rt 45
       ]
       hatch 1 [
         pen-down
         set amt next
+        set color next-color
         lt 45
       ]
       die

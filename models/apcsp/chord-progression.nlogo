@@ -1,86 +1,214 @@
-breed [foci focus]
-breed [directrii directrix]
-breed [points point]
+extensions [sound]
+breed [chords chord]
+breed [melodies melody]
+chords-own [notes]
+melodies-own [m-notes belongs-to-chord]
 
-directrii-own [slope]
+globals [chord-progression instrument-name legal-notes velocity]
 
 to setup
   clear-all
-  ask patches [set pcolor white]
-
-  create-foci 1 [
-    setxy foci-xcor foci-ycor
-    set shape "circle"
-    set color blue
-    set size 2
+  set velocity 60
+  set instrument-name "Acoustic Grand Piano"
+  set legal-notes [71 72 74 76 77 79 81 83 84 86 88 89 91 93 95 96]
+;  set legal-notes [60 63 65 67 70 72 75 77 79 82 84 87 89 91 94]
+  create-chords 4 [
+    setxy 0 -5
+    set heading 0
+    fd 5
+    rt 90
+    set pen-size 1.5
+    set size 1.5
   ]
 
-  create-directrii 1 [
-    setxy 0 directrix-ycor
-    set heading 90
-    set color blue
-    set pen-size 2
-    pen-down
-    forward max-pxcor
-    forward max-pxcor + 1
-    die
+  ask chord 0 [
+    set notes [48 52 55 59]
   ]
 
-  create-points 5000 [
-    setxy random-xcor random-ycor
-    set size 0.5
-    set color black
-    set shape "circle"
+  ask chord 1 [
+    set notes [45 48 52 55]
+    repeat 64 [
+      bk 10 * pi / 256
+      lt 360 / 256
+    ]
   ]
 
+  ask chord 2 [
+    set notes [41 45 48 52]
+    repeat 128 [
+      bk 10 * pi / 256
+      lt 360 / 256
+    ]
+  ]
+
+  ask chord 3 [
+    set notes [43 47 50 53]
+    repeat 192 [
+      bk 10 * pi / 256
+      lt 360 / 256
+    ]
+  ]
+
+;; JAZZ Chords
+;    ask chord 0 [
+;    set notes [48 52 55 60]
+;  ]
+;
+;  ask chord 1 [
+;    set notes [43 48 52 55]
+;    repeat 64 [
+;      bk 10 * pi / 256
+;      lt 360 / 256
+;    ]
+;  ]
+;
+;  ask chord 2 [
+;    set notes [41 45 48 53]
+;    repeat 128 [
+;      bk 10 * pi / 256
+;      lt 360 / 256
+;    ]
+;  ]
+;
+;  ask chord 3 [
+;    set notes [48 52 55 60]
+;    repeat 192 [
+;      bk 10 * pi / 256
+;      lt 360 / 256
+;    ]
+;  ]
+;
+;  ask chord 4 [
+;    set notes [43 47 50 55 41 45 48 53]
+;    repeat 192 [
+;      bk 10 * pi / 256
+;      lt 360 / 256
+;    ]
+;  ]
+;
+;  ask chord 5 [
+;    set notes [36 40 43 48]
+;    repeat 192 [
+;      bk 10 * pi / 256
+;      lt 360 / 256
+;    ]
+;  ]
+
+
+
+  set chord-progression 0
   reset-ticks
 end
 
 to go
-  if ticks >= 1000 [
-    ask points with [should-move? = true] [die]
-    stop
+  ask chords [
+    pen-down
+    fd 10 * pi / 256
+    rt 360 / 256
   ]
 
-  ask points [
-    if should-move? [
-      move-around
+  ask melodies [
+    ifelse not empty? m-notes [
+      if ticks mod 3 = 0 [
+        if random 100 < 30 [
+          play-note (item 0 m-notes)
+          if random 100 < 20 [
+            play-note (item 0 m-notes + 12)
+          ]
+          set m-notes remove-item 0 m-notes
+          rt random 20
+          lt random 20
+          fd 1
+        ]
+      ]
+    ] [die]
+
+;    if chord-progression != belongs-to-chord + 1 and chord-progression != 0 [ die ]
+  ]
+
+  if ticks mod 64 = 0 [
+    ask chord chord-progression [
+      play-chords
+
+      let first-note item 0 notes + 12 - 1
+
+      make-melody
+
+      set chord-progression (chord-progression + 1) mod count chords
     ]
   ]
-
   tick
 end
 
-to move-around
-  fd 0.1
-  rt random 30
-  lt random 30
+to make-melody
+  hatch-melodies 1 [
+    set size 1
+    set pen-size 1
+    lt 35 * (chord-progression + 1) + 10
+
+    set belongs-to-chord chord-progression
+    set m-notes (list one-of legal-notes)
+    let idx position last m-notes m-notes
+
+    repeat random 8 + 4 [
+
+      set idx idx + random 4 - 2
+
+      if idx >= length legal-notes [ set idx random length legal-notes ]
+      if idx < 0 [ set idx random length legal-notes ]
+
+      set m-notes fput (item idx legal-notes) m-notes
+    ]
+    if random 100 < 90 [
+;      show "hey!"
+      let how-many-notes random 2 + 2
+;      show length m-notes
+;      show how-many-notes
+      repeat how-many-notes [
+        set m-notes fput item (length m-notes - 1 - how-many-notes) m-notes m-notes
+        set how-many-notes how-many-notes - 1
+      ]
+;      show m-notes
+    ]
+  ]
 end
 
-to-report should-move?
-  report not (distance-from-directrix = distance-from-foci)
+
+
+to play-chords
+  ifelse length notes = 4 [
+    foreach notes [ n ->
+      sound:play-note instrument-name n + transpose velocity - 10 4
+      wait 0.05
+    ]
+  ] [
+    let i 0
+    repeat 4 [
+      sound:play-note instrument-name item i notes + transpose velocity - 10 4
+      set i i + 1
+      wait 0.05
+    ]
+
+    sound:play-note-later 2 instrument-name item (i) notes + transpose velocity - 10 4
+    sound:play-note-later 2.05 instrument-name item (i + 1) notes + transpose velocity - 10 4
+    sound:play-note-later 2.10 instrument-name item (i + 2) notes + transpose velocity - 10 4
+    sound:play-note-later 2.15 instrument-name item (i + 3) notes + transpose velocity - 10 4
+
+  ]
 end
 
-to-report distance-from-foci
-  report round-hundredth (sqrt ((xcor - foci-xcor) ^ 2 + (ycor - foci-ycor) ^ 2))
-end
-
-to-report round-hundredth [n]
-  report round (n * (1 / (10 ^ rounding-margin-n))) / (1 / (10 ^ rounding-margin-n))
-end
-
-to-report distance-from-directrix
-  report round-hundredth (abs (ycor - directrix-ycor))
+to play-note [note]
+  sound:play-note instrument-name note + transpose velocity random-float 2 + 0.5
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-208
-13
-633
-439
+210
+10
+647
+448
 -1
 -1
-4.13
+13.0
 1
 10
 1
@@ -90,21 +218,21 @@ GRAPHICS-WINDOW
 1
 1
 1
--50
-50
--50
-50
+-16
+16
+-16
+16
 1
 1
 1
 ticks
-60.0
+16.0
 
 BUTTON
-37
-70
-100
-103
+30
+66
+93
+99
 NIL
 setup
 NIL
@@ -118,10 +246,78 @@ NIL
 1
 
 BUTTON
-119
-71
-182
-104
+7
+160
+73
+193
+Cmaj7
+ask chord 0 [play-chords]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+8
+198
+73
+231
+Am7
+ask chord 1 [play-chords]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+8
+235
+73
+268
+Fmaj7
+ask chord 2 [play-chords]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+9
+275
+75
+308
+Gmaj7
+ask chord 3 [play-chords]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+115
+64
+178
+97
 NIL
 go
 T
@@ -134,63 +330,20 @@ NIL
 NIL
 1
 
-INPUTBOX
-41
-122
-102
-182
-foci-xcor
-0.0
-1
-0
-Number
-
-INPUTBOX
-107
-122
-168
-182
-foci-ycor
-0.0
-1
-0
-Number
-
-INPUTBOX
-41
-191
-168
-251
-directrix-ycor
-0.0
-1
-0
-Number
-
 SLIDER
-16
-279
-188
-312
-rounding-margin-n
-rounding-margin-n
--3
-3
--3.0
+19
+114
+191
+147
+transpose
+transpose
+-12
+12
+4.0
 1
 1
 NIL
 HORIZONTAL
-
-TEXTBOX
-16
-319
-218
-361
-the model will round to the nearest\n10 ^ (rounding-margin-n)
-11
-0.0
-1
 
 @#$#@#$#@
 ## WHAT IS IT?
