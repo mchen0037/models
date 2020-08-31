@@ -24,18 +24,17 @@ to setup
 end
 
 to go
-  if (not any? turtles with [color = black]) or (ticks > 104) [stop]
+  if (not any? turtles with [color = black]) or (ticks > 208) [stop]
   ask turtles [
     if (color = red) [
-      ask (turtles-on neighbors4) with [color != green] [
+      ask (turtles-on neighbors4) with [color = black] [
         set color red
       ]
     ]
     wiggle
     move
-
   ]
-  plot-procedure
+  plot-new-cases
   tick
 end
 
@@ -48,10 +47,8 @@ to move
   forward 1
 end
 
-to plot-procedure
+to plot-new-cases
   set-current-plot-pen "infected"
-  plot (count turtles with [color = red] / num-people) * 100
-
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -135,13 +132,13 @@ PLOT
 19
 1167
 433
-Number of People Sick (%)
+New Cases
 time
 people sick
 0.0
-104.0
+208.0
 0.0
-100.0
+150.0
 true
 false
 "" ""
