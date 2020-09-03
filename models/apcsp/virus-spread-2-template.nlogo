@@ -133,7 +133,7 @@ PLOT
 19
 1167
 433
-New Cases
+Active Cases
 time
 people sick
 0.0
