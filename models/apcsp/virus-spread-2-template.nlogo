@@ -1,5 +1,3 @@
-turtles-own [weeks-sick]
-
 to setup
   clear-all
   reset-ticks
@@ -13,7 +11,6 @@ to setup
   ask turtles [
     setxy random-xcor random-ycor
     set color black
-    set weeks-sick 0
   ]
 
   ask one-of turtles [
@@ -24,7 +21,7 @@ to setup
 end
 
 to go
-  if (not any? turtles with [color = black]) or (ticks > 208) [stop]
+  if (not any? turtles with [color = black]) or (ticks > 104) [stop]
   ask turtles [
     if (color = red) [
       ask (turtles-on neighbors4) with [color = black] [
@@ -44,21 +41,25 @@ to wiggle
 end
 
 to move
-  forward 1
+  forward random 5
 end
 
 to plot-new-cases
   set-current-plot-pen "infected"
 end
+
+to-report active-cases
+  report count turtles with [color = red]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 248
 14
-669
-436
+663
+430
 -1
 -1
-4.09
+6.67213115
 1
 10
 1
@@ -68,12 +69,12 @@ GRAPHICS-WINDOW
 1
 1
 1
--50
-50
--50
-50
-0
-0
+-30
+30
+-30
+30
+1
+1
 1
 ticks
 10.0
@@ -119,10 +120,10 @@ SLIDER
 146
 num-people
 num-people
-1000
-7000
-5000.0
-1000
+0
+3000
+1500.0
+500
 1
 people
 HORIZONTAL
@@ -136,9 +137,9 @@ New Cases
 time
 people sick
 0.0
-208.0
+104.0
 0.0
-150.0
+215.0
 true
 false
 "" ""
