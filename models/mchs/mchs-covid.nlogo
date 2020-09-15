@@ -175,7 +175,7 @@ num-people
 num-people
 0
 700
-700.0
+350.0
 50
 1
 NIL
