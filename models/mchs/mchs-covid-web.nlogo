@@ -2,26 +2,41 @@ extensions [import-a fetch]
 globals [mchs-dataset]
 breed [students student]
 
+to show-map
+
+end
+
 to setup
   clear-all
   if show-map? [
 
     import-drawing "mchs-map.png"
   ]
-  import-pcolors "mchs-map-outline-2.png"
-  file-close
-
-
-  create-students num-people [
-    set size 2
-    let clear-patch one-of patches with [pcolor = white]
-    setxy [pxcor] of clear-patch [pycor] of clear-patch
-    set color blue
+  ifelse num-students = 150 [
+    import-a:world fetch:url (word "https://raw.githubusercontent.com/mchen0037/models/master/models/mchs/mchs-150.csv")
+  ] [
+    ifelse num-students = 350 [
+      import-a:world fetch:url (word "https://raw.githubusercontent.com/mchen0037/models/master/models/mchs/mchs-350.csv")
+    ] [
+      ifelse num-students = 750 [
+        import-a:world fetch:url (word "https://raw.githubusercontent.com/mchen0037/models/master/models/mchs/mchs-700.csv")
+      ] [
+        show "model is broken"
+      ]
+    ]
   ]
-  ask one-of students [
-    set color red
-  ]
-  reset-ticks
+
+;  create-students num-people [
+;    set size 2
+;    let clear-patch one-of patches with [pcolor = white]
+;    setxy [pxcor] of clear-patch [pycor] of clear-patch
+;    set color blue
+;  ]
+;  ask one-of students [
+;    set color red
+;  ]
+;  reset-ticks
+
 end
 
 to go
@@ -166,21 +181,6 @@ wear-masks?
 1
 -1000
 
-SLIDER
-23
-189
-195
-222
-num-people
-num-people
-0
-700
-700.0
-50
-1
-NIL
-HORIZONTAL
-
 PLOT
 755
 35
@@ -198,6 +198,16 @@ false
 "" ""
 PENS
 "active" 1.0 0 -16777216 true "" ""
+
+CHOOSER
+38
+199
+176
+244
+num-students
+num-students
+150 350 700
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
