@@ -1,8 +1,5 @@
 breed [foci focus]
-breed [directrii directrix]
 breed [points point]
-
-directrii-own [slope]
 
 to setup
   clear-all
@@ -15,15 +12,8 @@ to setup
     set size 2
   ]
 
-  create-directrii 1 [
-    setxy 0 directrix-ycor
-    set heading 90
-    set color blue
-    set pen-size 2
-    pen-down
-    forward max-pxcor
-    forward max-pxcor + 1
-    die
+  ask patches with [pycor = directrix-ycor] [
+    set pcolor blue
   ]
 
   create-points 5000 [
@@ -140,7 +130,7 @@ INPUTBOX
 102
 182
 foci-xcor
-10.0
+0.0
 1
 0
 Number
@@ -151,7 +141,7 @@ INPUTBOX
 168
 182
 foci-ycor
-10.0
+-10.0
 1
 0
 Number
@@ -162,7 +152,7 @@ INPUTBOX
 168
 251
 directrix-ycor
-0.0
+-10.0
 1
 0
 Number
@@ -176,7 +166,7 @@ rounding-margin-n
 rounding-margin-n
 -3
 3
--3.0
+-2.0
 1
 1
 NIL

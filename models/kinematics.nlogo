@@ -4,27 +4,34 @@ to setup
   clear-all
   create-turtles 1
   ask turtles [
-    set velocity 0
-    set acceleration 0
+    set velocity initial-velocity
+    set acceleration initial-acceleration
     set mass 10 ; kg
     set shape "circle"
-    set size 3
+    set size 15
     set color black
-    set ycor max-pycor / 2
+    set xcor initial-position
   ]
   ask patches [set pcolor white]
   set stop-force-at 0
   reset-ticks
 end
 
+; a = some number or constant
+; v = v + a
+; x = x + v
 to go
-  if any? turtles with [xcor = max-pxcor] [stop]
+  if any? turtles with [xcor >= max-pxcor or xcor <= min-pxcor] [stop]
   ask turtles [
     if ticks > stop-force-at [
-      set acceleration 0
+      set acceleration initial-acceleration
     ]
     set velocity velocity + acceleration
-    ifelse xcor + velocity > max-pxcor [set xcor max-pxcor stop ] [set xcor xcor + velocity]
+    ifelse xcor + velocity > max-pxcor or xcor + velocity < min-pxcor [
+      set xcor max-pxcor stop
+    ] [
+      set xcor xcor + velocity
+    ]
     plot-procedure
   ]
 
@@ -47,30 +54,28 @@ to plot-procedure
   plot velocity
   set-current-plot "acceleration"
   plot acceleration
-
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
-242
-56
-751
-166
+296
+89
+1300
+198
 -1
 -1
-1.0
+0.25
 1
 10
 1
 1
 1
 0
-1
-1
-1
 0
-500
-0
+1
+1
+-1000
+1000
+-100
 100
 1
 1
@@ -78,22 +83,11 @@ GRAPHICS-WINDOW
 ticks
 30.0
 
-INPUTBOX
-35
-217
-93
-277
-force
-5.0
-1
-0
-Number
-
 BUTTON
-35
-174
-130
-207
+36
+240
+131
+273
 NIL
 apply-force
 NIL
@@ -107,25 +101,25 @@ NIL
 1
 
 SLIDER
-99
-244
-271
-277
+21
+330
+193
+363
 force-length
 force-length
 0
-50
-28.0
+15
+10.0
 1
 1
 ticks
 HORIZONTAL
 
 BUTTON
-31
-82
-94
-115
+13
+20
+76
+53
 NIL
 setup
 NIL
@@ -139,10 +133,10 @@ NIL
 1
 
 BUTTON
-127
-84
-190
-117
+86
+22
+149
+55
 NIL
 go
 T
@@ -156,17 +150,17 @@ NIL
 1
 
 PLOT
-290
-213
-490
-363
+262
+306
+619
+611
 position
 time
 xcor
 0.0
 10.0
-0.0
-10.0
+-1000.0
+1000.0
 true
 false
 "" ""
@@ -174,16 +168,16 @@ PENS
 "position" 1.0 0 -16777216 true "" ""
 
 PLOT
-503
-213
-703
-363
+631
+308
+977
+611
 velocity
 time
 velocity
 0.0
 10.0
-0.0
+-10.0
 10.0
 true
 false
@@ -192,22 +186,82 @@ PENS
 "velocity" 1.0 0 -16777216 true "" ""
 
 PLOT
-715
-214
-915
-364
+984
+307
+1358
+612
 acceleration
 time
 acceleration
 0.0
 10.0
-0.0
-1.0
+-5.0
+5.0
 true
 false
 "" ""
 PENS
 "acceleration" 1.0 0 -16777216 true "" ""
+
+SLIDER
+15
+127
+206
+160
+initial-velocity
+initial-velocity
+-5
+5
+0.0
+0.1
+1
+m/s
+HORIZONTAL
+
+SLIDER
+16
+165
+206
+198
+initial-acceleration
+initial-acceleration
+-5
+5
+0.0
+0.1
+1
+m/s^2
+HORIZONTAL
+
+SLIDER
+18
+93
+190
+126
+initial-position
+initial-position
+-999
+999
+-999.0
+50
+1
+m
+HORIZONTAL
+
+SLIDER
+23
+290
+195
+323
+force
+force
+-10
+10
+10.0
+1
+1
+N
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
