@@ -175,7 +175,7 @@ SWITCH
 176
 show-links?
 show-links?
-0
+1
 1
 -1000
 
