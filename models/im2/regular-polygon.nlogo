@@ -1,117 +1,37 @@
 to draw
   clear-all
-  set-default-shape turtles "person"
-  ask patches [set pcolor black]
-  draw-H
-  draw-U
-  draw-M
-  draw-A
-  draw-N
+  draw-perfect-graph n
+end
 
-  ask turtles [
-    pen-down
-    set size 0
-    let my-color color
-    create-links-with other turtles with [color = my-color] [
-      set hidden? not show-links?
-      set color my-color + 2
+to draw-perfect-graph [vertices]
+  create-turtles vertices [
+    set heading 0
+    set color red
+  ]
+  let i 0
+  foreach (list turtles) [ t ->
+    ask t [
+      set heading (i * 360 / vertices)
+      set i i + 1
+      forward 10
+      right 90
+      right 180 / vertices
+      pen-down
+      forward 20 * (sin (180 / vertices))
     ]
-   set color color - 1
   ]
-  reset-ticks
+  ask turtles [die]
 end
 
-to move
-  let my-color color
-;  set heading random 360
-  face one-of link-neighbors
-  right random 300
-  left random 300
-  forward 0.1
-end
-
-to go
-  ask links [set hidden? not show-links?]
-  ask turtles [move]
-  tick
-end
-
-to draw-H
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = -38] [
-    sprout 1
-  ]
-
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = -26] [
-    sprout 1
-  ]
-
-  ask patches with [pycor = 0 and pxcor > -38 and pxcor < -26] [
-    sprout 1
-  ]
-end
-
-to draw-U
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = -22] [
-    sprout 1
-  ]
-
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = -10] [
-    sprout 1
-  ]
-
-  ask patches with [pycor = -10 and pxcor > -22 and pxcor < -10] [
-    sprout 1
-  ]
-end
-
-to draw-M
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = -6] [
-    sprout 1
-  ]
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = 6] [
-    sprout 1
-  ]
-  ask patches with [pycor = 10 and pxcor > -7 and pxcor < 7] [
-    sprout 1
-  ]
-  ask patches with [pxcor = 0 and pycor > -2 and pycor < 10] [
-    sprout 1
-  ]
-end
-
-to draw-A
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = 10] [
-    sprout 1
-  ]
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = 22] [
-    sprout 1
-  ]
-  ask patches with [pycor = 10 and pxcor > 9 and pxcor < 23] [
-    sprout 1
-  ]
-  ask patches with [pycor = 0 and pxcor > 9 and pxcor < 23] [
-    sprout 1
-  ]
-end
-
-to draw-N
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = 26] [
-    sprout 1
-  ]
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = 38] [
-    sprout 1
-  ]
-  ask patches with [pycor = 10 and pxcor > 26 and pxcor < 38] [
-    sprout 1
-  ]
-
+to-report calc-radius [v]
+  report 180 / v
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-145
-177
-1336
-615
+210
+10
+647
+448
 -1
 -1
 13.0
@@ -124,8 +44,8 @@ GRAPHICS-WINDOW
 0
 0
 1
--45
-45
+-16
+16
 -16
 16
 1
@@ -135,11 +55,11 @@ ticks
 30.0
 
 BUTTON
-699
-61
-762
-94
-reset
+37
+73
+100
+106
+NIL
 draw
 NIL
 1
@@ -151,33 +71,20 @@ NIL
 NIL
 1
 
-BUTTON
-799
-62
-862
-95
-draw
-go
-T
+SLIDER
+21
+123
+193
+156
+n
+n
+3
+180
+3.0
 1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
 1
-
-SWITCH
-147
-143
-265
-176
-show-links?
-show-links?
-0
-1
--1000
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?

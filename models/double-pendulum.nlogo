@@ -1,120 +1,111 @@
-to draw
-  clear-all
-  set-default-shape turtles "person"
-  ask patches [set pcolor black]
-  draw-H
-  draw-U
-  draw-M
-  draw-A
-  draw-N
+breed [weights weight]
+breed [gravities gravity]
+breed [tensions tension]
+weights-own [mass speed acceleration speed-t speed-g]
+gravities-own [magnitude]
+tensions-own [magnitude]
+globals [ten gra]
 
-  ask turtles [
-    pen-down
-    set size 0
-    let my-color color
-    create-links-with other turtles with [color = my-color] [
-      set hidden? not show-links?
-      set color my-color + 2
-    ]
-   set color color - 1
+to setup
+  clear-all
+  create-turtles 1 [
+    set shape "circle"
+  ]
+  create-weights 1 [
+;    set shape "circle"
+    set acceleration 0
+    set mass 10 ; kg
+    set size mass / 5
+    facexy 0 0
+    set color red
+;    left 90
+    setxy 20 1
+    create-link-with one-of other turtles
+  ]
+  create-gravities 1 [
+    create-link-with one-of weights
+    setxy [xcor] of one-of link-neighbors [ycor] of one-of link-neighbors
+    set heading 180
+    fd 2
+    set magnitude [mass] of one-of link-neighbors * 9.8
+    set gra self
+  ]
+  create-tensions 1 [
+    create-link-with one-of weights
+    setxy [xcor] of one-of link-neighbors [ycor] of one-of link-neighbors
+    facexy 0 0
+    forward 2
+    ; mg sin theta
+    set magnitude [mass] of one-of link-neighbors * 9.8 * sin calc-theta heading
+    set shape "star"
+    set ten self
   ]
   reset-ticks
 end
 
-to move
-  let my-color color
-;  set heading random 360
-  face one-of link-neighbors
-  right random 300
-  left random 300
-  forward 0.1
-end
-
 to go
-  ask links [set hidden? not show-links?]
-  ask turtles [move]
+  ; F = ma a = F / m
+  ; T = mg / cos theta (difference between headings)
+  ask tensions [
+    update-tension
+  ]
+  ask gravities [
+    update-gravity
+  ]
+  ask weights [
+    face ten
+    set speed-t [magnitude] of ten / mass / mass
+    forward speed-t
+    face gra
+    set speed-g [magnitude] of gra / mass / mass
+    forward speed-g
+    calc-direction-and-speed
+    forward speed
+    show speed
+  ]
   tick
 end
 
-to draw-H
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = -38] [
-    sprout 1
-  ]
-
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = -26] [
-    sprout 1
-  ]
-
-  ask patches with [pycor = 0 and pxcor > -38 and pxcor < -26] [
-    sprout 1
-  ]
+to update-tension
+  setxy [xcor] of one-of link-neighbors [ycor] of one-of link-neighbors
+  facexy 0 0
+  forward 2
+  set magnitude [mass] of one-of weights * 9.8 * cos calc-theta heading
 end
 
-to draw-U
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = -22] [
-    sprout 1
-  ]
-
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = -10] [
-    sprout 1
-  ]
-
-  ask patches with [pycor = -10 and pxcor > -22 and pxcor < -10] [
-    sprout 1
-  ]
+to update-gravity
+  setxy [xcor] of one-of link-neighbors [ycor] of one-of link-neighbors
+  set heading 180
+  fd 2
+  set magnitude [mass] of one-of link-neighbors * 9.8
 end
 
-to draw-M
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = -6] [
-    sprout 1
-  ]
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = 6] [
-    sprout 1
-  ]
-  ask patches with [pycor = 10 and pxcor > -7 and pxcor < 7] [
-    sprout 1
-  ]
-  ask patches with [pxcor = 0 and pycor > -2 and pycor < 10] [
-    sprout 1
-  ]
+to calc-direction-and-speed
+  ; a = -g sin theta
+  set acceleration -9.8 * sin calc-theta heading / mass
+  facexy 0 0
+  left 90
+;  set heading calc-perp-theta heading
+  set speed speed + acceleration
 end
 
-to draw-A
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = 10] [
-    sprout 1
-  ]
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = 22] [
-    sprout 1
-  ]
-  ask patches with [pycor = 10 and pxcor > 9 and pxcor < 23] [
-    sprout 1
-  ]
-  ask patches with [pycor = 0 and pxcor > 9 and pxcor < 23] [
-    sprout 1
-  ]
+to-report calc-perp-theta [head]
+  left 90
+  report 1
 end
 
-to draw-N
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = 26] [
-    sprout 1
-  ]
-  ask patches with [pycor > -11 and pycor < 11 and pxcor = 38] [
-    sprout 1
-  ]
-  ask patches with [pycor = 10 and pxcor > 26 and pxcor < 38] [
-    sprout 1
-  ]
-
+to-report calc-theta [head]
+  report 360 - head
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-145
-177
-1336
-615
+210
+10
+644
+445
 -1
 -1
-13.0
+6.984
 1
 10
 1
@@ -124,10 +115,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--45
-45
--16
-16
+-30
+30
+-30
+30
 1
 1
 1
@@ -135,12 +126,12 @@ ticks
 30.0
 
 BUTTON
-699
-61
-762
-94
-reset
-draw
+29
+88
+92
+121
+NIL
+setup
 NIL
 1
 T
@@ -152,11 +143,11 @@ NIL
 1
 
 BUTTON
-799
-62
-862
-95
-draw
+126
+92
+189
+125
+NIL
 go
 T
 1
@@ -167,17 +158,6 @@ NIL
 NIL
 NIL
 1
-
-SWITCH
-147
-143
-265
-176
-show-links?
-show-links?
-0
-1
--1000
 
 @#$#@#$#@
 ## WHAT IS IT?

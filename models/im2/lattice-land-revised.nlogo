@@ -125,7 +125,8 @@ to draw-polygon
   ([ [first-point second-point] -> add-polygon-edge first-point second-point ])
 
   ; End task when the polygon is completed
-([ -> polygon-completed? ])
+  ([ -> polygon-completed? ])
+  if polygon-completed? [share]
 end
 
 to add-polygon-edge [ candidate previous ]                        ; Creates edge between selected dot (candidate) and previously selected dot (prev)
@@ -207,7 +208,6 @@ end
 to check-area ; Generates user message with area of current polygon when user clicks check-area button
   ifelse polygon-completed? [
     user-message (word "The area of this polygon is " abs(area) " square units.")
-    share
   ][
     ; If no current polygon is recognized, generates this error message
     user-message (word "I can only determine the area of the last polygon constructed using the 'Draw Polygon' action. If you change actions, I automatically reset.")
@@ -391,11 +391,11 @@ end
 GRAPHICS-WINDOW
 245
 15
-1163
-479
+823
+414
 -1
 -1
-35.0
+30.0
 1
 10
 1
@@ -406,7 +406,7 @@ GRAPHICS-WINDOW
 0
 1
 0
-25
+18
 0
 12
 0
@@ -479,7 +479,7 @@ width
 width
 4
 35
-25.0
+18.0
 1
 1
 NIL
@@ -509,7 +509,7 @@ unit-size
 unit-size
 10
 100
-35.0
+30.0
 5
 1
 NIL

@@ -1,13 +1,13 @@
-to setup
+to draw
   clear-all
-  reset-ticks
+  draw-perfect-graph n
 end
 
 to draw-perfect-graph [vertices]
   ask turtles [die]
   create-turtles vertices [
     set heading 0
-    create-links-with other turtles
+    set color red
   ]
   let i 0
   foreach (list turtles) [ t ->
@@ -16,13 +16,15 @@ to draw-perfect-graph [vertices]
       set i i + 1
       forward 10
       right 90
+      right 180 / vertices
+      pen-down
+      forward 10 / (cos 90 - 180 / vertices)
     ]
   ]
 end
 
-to go
-  draw-perfect-graph n
-  tick
+to-report calc-radius [v]
+  report 180 / v
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -58,25 +60,8 @@ BUTTON
 100
 106
 NIL
-setup
+draw
 NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-115
-73
-178
-106
-NIL
-go
-T
 1
 T
 OBSERVER
@@ -93,9 +78,9 @@ SLIDER
 156
 n
 n
-0
+3
 30
-10.0
+5.0
 1
 1
 NIL
