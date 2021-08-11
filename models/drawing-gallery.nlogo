@@ -119,10 +119,10 @@ NIL
 1
 
 BUTTON
-21
-44
-207
-77
+17
+91
+203
+124
 share screen with everyone
 share
 NIL
@@ -251,9 +251,26 @@ TEXTBOX
 120
 1106
 190
-By adjusting the \"draw-something\" procedure, code one or mnay turtles to draw something cool! Be sure the share with everyone :)
+By adjusting the \"draw-something\" procedure, code one or many turtles to draw something cool! Be sure the share with everyone :)
 11
 0.0
+1
+
+BUTTON
+19
+51
+93
+84
+NIL
+clear-all
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
 1
 
 @#$#@#$#@
